@@ -25,7 +25,7 @@ package org.mycore.mir.authorization.accesskeys;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

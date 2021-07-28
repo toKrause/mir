@@ -24,8 +24,8 @@ package org.mycore.mir.authorization.accesskeys;
 
 import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
