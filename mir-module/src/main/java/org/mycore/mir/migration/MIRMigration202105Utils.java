@@ -50,10 +50,12 @@ public class MIRMigration202105Utils {
             final String writeKey = accessKeyPair.getWriteKey();
             if (readKey != null) {
                 final MCRAccessKey accessKey = new MCRAccessKey(objectId, readKey, MCRAccessManager.PERMISSION_READ);
+                accessKey.setComment(readKey);
                 MCRAccessKeyManager.addAccessKey(accessKey);
             }
             if (writeKey != null) {
                 final MCRAccessKey accessKey = new MCRAccessKey(objectId, writeKey, MCRAccessManager.PERMISSION_WRITE);
+                accessKey.setComment(writeKey);
                 MCRAccessKeyManager.addAccessKey(accessKey);
             }
             MIRAccessKeyManager.removeAccessKeyPair(objectId);
