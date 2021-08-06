@@ -200,10 +200,12 @@ class MIRAccessKeyEditor {
       const data = $(event.relatedTarget).data();
       if (data.index != undefined) {
         const accessKey = this._tableModel.getDataAt(data.index);
-        $("#id-input").val(accessKey.value);
         $("#type-input").val(accessKey.type);
         $("#value-input").val(accessKey.value);
+        $("#comment-textarea").val(accessKey.comment);
+        $("#value-input").attr("readonly","true");
         $("#add-btn").hide();
+        $("#value-gen-btn").hide();
         $("#modal-alert-div").hide();
         $("#update-btn").show();
         $("#delete-btn").show();
@@ -211,9 +213,11 @@ class MIRAccessKeyEditor {
         $("#type-input").removeClass("is-invalid");
       }
       if (data.mode == "new") {
-        $("#id-input").val("");
         $("#value-input").val("");
+        $("#value-input").attr("readonly","");
         $("#type-input").val("read");
+        $("#comment-textarea").val("");
+        $("#value-gen-btn").show();
         $("#add-btn").show();
         $("#delete-btn").hide();
         $("#update-btn").hide();
@@ -250,25 +254,16 @@ class MIRAccessKeyEditor {
       $(".modal-close-btn").prop("disabled", true);
       const accessKey = {
         "type": $("#type-input").val(),
-        "value": $("#value-input").val(),
+        "comment": $("#comment-textarea").val()
       };
-      if (!isValidValue(accessKey.value)) {
-        $("#delete-btn").prop("disabled", false);
-        $("#update-btn").prop("disabled", false);
-        $(".modal-close-btn").prop("disabled", false);
-        $("#value-input").addClass("is-invalid");
-        return;
-      } else {
-        $("#value-input").removeClass("is-invalid");
-      }
-      const accessKeyId = $("#id-input").val();
+      const accessKeyId = $("#value-input").val();
       this._client.updateKey(accessKeyId, accessKey, (error, data) => {
         if (!error) {
           const index = this._tableModel.data.findIndex(key => key.value === accessKeyId);
           if (index == -1) {
             console.error("inconsistency");
           } else {
-            this._tableModel.updateRow(index, accessKey);
+            this._tableModel.updateRow(index, data);
             $("#key-modal").modal("hide");
           }
         } else {
@@ -299,7 +294,7 @@ class MIRAccessKeyEditor {
       }
       this._client.addKey(accessKey, (error, data) => {
         if (!error) {
-          this._tableModel.addRow(accessKey);
+          this._tableModel.addRow(data);
           $("#key-modal").modal("hide");
         } else {
           this._handleModalError(error);
@@ -443,8 +438,8 @@ class MIRAccessKeyEditor {
       }
       const typeCell = row.find("td").eq(1);
       typeCell.html(accessKey["type"]);
-      const valueCell = row.find("td").eq(2);
-      valueCell.html(accessKey["value"]);
+      const commentCell = row.find("td").eq(2);
+      commentCell.html(accessKey["comment"]);
       row.css("visibility", "visible");
     }
   }
@@ -519,7 +514,7 @@ class Client {
  deleteKey(value, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/accesskeys/" + urlEncode(value),
+     url: API_URL + this._id + "/accesskeys/" + value,
      type: "DELETE",
      beforeSend: function (xhr) {
        if (token != undefined) {
@@ -537,7 +532,7 @@ class Client {
  updateKey(value, accessKey, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/accesskeys/" + urlEncode(value),
+     url: API_URL + this._id + "/accesskeys/" + value,
      type: "PUT",
      data: JSON.stringify(accessKey),
      contentType: "application/json",

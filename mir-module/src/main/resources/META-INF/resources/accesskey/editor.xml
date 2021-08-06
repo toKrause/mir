@@ -30,7 +30,7 @@
               <i18n key="mir.accesskey.type" />
             </th>
             <th class="th col text-center">
-              <i18n key="mir.accesskey.value" />
+              <i18n key="mir.accesskey.comment" />
             </th>
             <th class="th col-auto" />
           </tr>
@@ -98,7 +98,6 @@
               <div id="modal-alert-div" class="alert alert-danger" style="display: none;" role="alert">
                 This is a danger alert—check it out!
               </div>
-              <input type="hidden" id="id-input" />
               <div class="form-row">
                 <div class="col-4 form-group">
                   <label for="type-input"><i18n key="mir.accesskey.type" />*</label>
@@ -122,6 +121,12 @@
                     </span>
                     <input id="value-input" type="text" class="form-control" />
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col form-group">
+                  <label for="comment"><i18n key="mir.accesskey.comment" /></label>
+                  <textarea class="form-control" id="comment-textarea" rows="3"></textarea>
                 </div>
               </div>
             </div>

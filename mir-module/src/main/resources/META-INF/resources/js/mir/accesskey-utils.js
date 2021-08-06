@@ -29,9 +29,3 @@ function generateKey(plength) {
 function isValidValue(value) {
   return value.length > 0;
 }
-function urlEncode(value) {
-  return btoa(value)
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-}
